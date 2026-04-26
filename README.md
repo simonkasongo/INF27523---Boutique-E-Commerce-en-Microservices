@@ -1,6 +1,6 @@
-# INF27523 — Boutique e-commerce en microservices (TP2)
+# INF27523 - Boutique e-commerce en microservices (TP2)
 
-Projet de cours (UQAR) : transformation de la logique d’une boutique monolithique (TP1) en **architecture en microservices** — plusieurs **ASP.NET Core Web API** indépendantes, une **passerelle (API Gateway)**, de la persistance par service et des appels HTTP entre services.
+Projet de cours (UQAR) : transformation de la logique d’une boutique monolithique (TP1) en **architecture en microservices** - plusieurs **ASP.NET Core Web API** indépendantes, une **passerelle (API Gateway)**, de la persistance par service et des appels HTTP entre services.
 
 **Auteur** : Simon Kasongo
 
@@ -16,7 +16,7 @@ Projet de cours (UQAR) : transformation de la logique d’une boutique monolithi
 - **Paiement** (`EC_PaymentService`, 5005) : intégration **Stripe** (mode test / clés de développement), enregistrement des paiements côté base.
 - **Notifications** (`EC_NotificationService`, 5006, bonus) : enregistrement d’événements (envoi simulé / journalisé).
 - **Données** : **Entity Framework Core** avec **une base SQL Server (LocalDB) par service** et **migrations** appliquées au démarrage (`Database.Migrate()`).
-- **Lancement** : solution Visual Studio (7 projets) ou script PowerShell `Code/start-all.ps1` (puis `stop-all.ps1` pour arrêter les ports 5000–5006).
+- **Lancement** : solution Visual Studio (7 projets) ou script PowerShell `Code/start-all.ps1` (puis `stop-all.ps1` pour arrêter les ports 5000-5006).
 
 ---
 
@@ -38,7 +38,7 @@ Projet de cours (UQAR) : transformation de la logique d’une boutique monolithi
 ## Démarrer en local
 
 1. **Prérequis** : SDK .NET 8, SQL Server **LocalDB**, Visual Studio 2022 (recommandé) ou CLI.
-2. Ouvrir `Code/EC_MicroServices.sln` et démarrer les **sept** projets (passerelle **après** les services si le Swagger unifié ne charge pas tout de suite — rafraîchir la page au besoin).  
+2. Ouvrir `Code/EC_MicroServices.sln` et démarrer les **sept** projets (passerelle **après** les services si le Swagger unifié ne charge pas tout de suite - rafraîchir la page au besoin).  
    Ou : `cd Code` puis `.\start-all.ps1`.
 3. **URLs utiles**  
    - Application / connexion : [http://localhost:5000](http://localhost:5000)  
@@ -46,12 +46,5 @@ Projet de cours (UQAR) : transformation de la logique d’une boutique monolithi
 
 **Chaînes de connexion** : `appsettings.json` de chaque service (ajuster l’instance SQL si besoin).  
 **Stripe (développement)** : placer les clés de test dans `EC_PaymentService/appsettings.Development.json` (fichier volontairement exclu du dépôt par `.gitignore`).
-
----
-
-## Structure du dépôt
-
-- `Code/` : solution, microservices, passerelle, scripts `start-all.ps1` / `stop-all.ps1`
-- `INF27523_Travail_Pratique_02.pdf` : énoncé du TP2
 
 Un déploiement **Azure** (App Service) peut compléter le travail : publier chaque service, mettre à jour les URLs dans la configuration Ocelot et les paramètres d’application (chaînes SQL, JWT, Stripe).
