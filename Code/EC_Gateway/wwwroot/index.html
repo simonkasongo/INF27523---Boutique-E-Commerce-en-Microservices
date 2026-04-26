@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion — Boutique (passerelle)</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --accent: #3b82f6;
+      --accent-dim: #2563eb;
+      --error: #f87171;
+      --ok: #34d399;
+      --border: #2d3a4f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, #1e3a5f 0%, var(--bg) 55%);
+      color: var(--text);
+      display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem;
+    }
+    h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 0.25rem; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.75rem; }
+    .card {
+      width: 100%; max-width: 400px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.35rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+    label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem; }
+    input, select {
+      width: 100%; padding: 0.6rem 0.75rem; border-radius: 8px; border: 1px solid var(--border);
+      background: #121a25; color: var(--text); font-size: 1rem; margin-bottom: 1rem;
+    }
+    input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+    button {
+      width: 100%; padding: 0.7rem; border: none; border-radius: 8px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+      color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+    }
+    button:hover { filter: brightness(1.06); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .msg { min-height: 1.2rem; font-size: 0.85rem; margin-top: 0.75rem; word-break: break-word; }
+    .msg.error { color: var(--error); }
+    .msg.ok { color: var(--ok); }
+    .links { margin-top: 1.25rem; text-align: center; font-size: 0.88rem; }
+    .links a { color: var(--accent); }
+    .section-title { font-size: 0.95rem; margin: 0 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .row2 > div { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <h1>Boutique e-commerce</h1>
+  <p class="sub">Point d'entrée : passerelle (EC_Gateway) — <strong>localhost:5000</strong></p>
+
+  <div class="card">
+    <h2 class="section-title">Connexion</h2>
+    <form id="form-connexion" novalidate>
+      <label for="email">Courriel</label>
+      <input type="email" id="email" name="email" required autocomplete="username" />
+      <label for="mdp">Mot de passe</label>
+      <input type="password" id="mdp" name="mdp" required autocomplete="current-password" />
+      <button type="submit" id="btn-conn">Se connecter</button>
+    </form>
+    <p id="out-connexion" class="msg" role="status"></p>
+  </div>
+
+  <p class="sub" style="margin-top:1.5rem;margin-bottom:0.5rem;">Nouveau compte</p>
+  <div class="card" style="margin-top:0">
+    <h2 class="section-title">Inscription</h2>
+    <form id="form-inscription" novalidate>
+      <div class="row2">
+        <div>
+          <label for="prenom">Prénom</label>
+          <input type="text" id="prenom" required />
+        </div>
+        <div>
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" required />
+        </div>
+      </div>
+      <label for="email-ins">Courriel</label>
+      <input type="email" id="email-ins" required autocomplete="email" />
+      <label for="mdp-ins">Mot de passe (min. 6 caractères)</label>
+      <input type="password" id="mdp-ins" required minlength="6" autocomplete="new-password" />
+      <label for="role">Rôle</label>
+      <select id="role">
+        <option value="Client">Client</option>
+        <option value="Vendeur">Vendeur</option>
+      </select>
+      <button type="submit" id="btn-ins">S'inscrire</button>
+    </form>
+    <p id="out-inscription" class="msg" role="status"></p>
+  </div>
+
+  <div class="links">
+    <a href="/swagger">Documentation API (Swagger unifié)</a>
+  </div>
+
+  <script>
+    const api = (path, body) =>
+      fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+    const setOut = (el, text, type) => {
+      el.textContent = text || "";
+      el.className = "msg" + (type ? " " + type : "");
+    };
+
+    document.getElementById("form-connexion").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btn-conn");
+      const out = document.getElementById("out-connexion");
+      setOut(out, "");
+      const email = document.getElementById("email").value.trim();
+      const motDePasse = document.getElementById("mdp").value;
+      btn.disabled = true;
+      try {
+        const r = await api("/api/auth/connexion", { email, motDePasse });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          setOut(out, data.message || ("Erreur " + r.status), "error");
+          return;
+        }
+        if (data.jeton) {
+          try { sessionStorage.setItem("jwt", data.jeton); } catch (_) {}
+        }
+        setOut(out, "Bienvenue, " + (data.prenom || "") + " " + (data.nom || "") + " — session connectée. Jeton enregistré pour cette fenêtre (Swagger: bouton Authorize, Bearer {jeton}).", "ok");
+      } catch (err) {
+        setOut(out, "Impossible de joindre l'API. Les microservices (dont Auth sur le port 5001) sont-ils démarrés ?", "error");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    document.getElementById("form-inscription").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("btn-ins");
+      const out = document.getElementById("out-inscription");
+      setOut(out, "");
+      const body = {
+        prenom: document.getElementById("prenom").value.trim(),
+        nom: document.getElementById("nom").value.trim(),
+        email: document.getElementById("email-ins").value.trim(),
+        motDePasse: document.getElementById("mdp-ins").value,
+        role: document.getElementById("role").value
+      };
+      btn.disabled = true;
+      try {
+        const r = await api("/api/auth/inscription", body);
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          const m = data.message || (Array.isArray(data["$"] ) ? "Requête invalide" : ("Erreur " + r.status));
+          if (r.status === 409) {
+            setOut(out, data.message || "Compte déjà existant.", "error");
+            return;
+          }
+          setOut(out, (typeof m === "string" ? m : "Erreur d'inscription.") + " Vérifiez les champs (mot de passe ≥ 6 caractères).", "error");
+          return;
+        }
+        if (data.jeton) {
+          try { sessionStorage.setItem("jwt", data.jeton); } catch (_) {}
+        }
+        setOut(out, "Inscription réussie. Vous pouvez maintenant vous connecter ci-dessus (même courriel / mot de passe).", "ok");
+      } catch (err) {
+        setOut(out, "Impossible de joindre l'API. Vérifiez que les services sont lancés.", "error");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

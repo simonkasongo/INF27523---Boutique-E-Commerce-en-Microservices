@@ -1,0 +1,44 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/produits",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5002 } ],
+      "UpstreamPathTemplate": "/api/produits",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "SwaggerKey": "produits"
+    },
+    {
+      "DownstreamPathTemplate": "/api/produits/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5002 } ],
+      "UpstreamPathTemplate": "/api/produits/{id}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+      "SwaggerKey": "produits"
+    },
+    {
+      "DownstreamPathTemplate": "/api/externes/fakestore",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5002 } ],
+      "UpstreamPathTemplate": "/api/externes/fakestore",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "produits"
+    },
+    {
+      "DownstreamPathTemplate": "/api/externes/dummyjson",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5002 } ],
+      "UpstreamPathTemplate": "/api/externes/dummyjson",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "produits"
+    },
+    {
+      "DownstreamPathTemplate": "/api/externes/importer",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5002 } ],
+      "UpstreamPathTemplate": "/api/externes/importer",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "produits"
+    }
+  ]
+}

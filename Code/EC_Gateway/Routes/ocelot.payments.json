@@ -1,0 +1,36 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/paiements",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5005 } ],
+      "UpstreamPathTemplate": "/api/paiements",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "paiements"
+    },
+    {
+      "DownstreamPathTemplate": "/api/paiements/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5005 } ],
+      "UpstreamPathTemplate": "/api/paiements/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "paiements"
+    },
+    {
+      "DownstreamPathTemplate": "/api/paiements/cle-publique",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5005 } ],
+      "UpstreamPathTemplate": "/api/paiements/cle-publique",
+      "UpstreamHttpMethod": [ "GET" ],
+      "SwaggerKey": "paiements"
+    },
+    {
+      "DownstreamPathTemplate": "/api/paiements/debiter",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "localhost", "Port": 5005 } ],
+      "UpstreamPathTemplate": "/api/paiements/debiter",
+      "UpstreamHttpMethod": [ "POST" ],
+      "SwaggerKey": "paiements"
+    }
+  ]
+}

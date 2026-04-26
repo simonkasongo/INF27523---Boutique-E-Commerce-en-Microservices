@@ -1,0 +1,30 @@
+## Fichiers compilés .NET
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## Logs
+*.log
+
+## Secrets locaux (clés Stripe, JWT, connexions de dev)
+**/appsettings.Development.json
+
+## Fichier de configuration Ocelot agrégé (regénéré au démarrage du Gateway)
+Code/EC_Gateway/Routes/ocelot.json
+
+## OS
+Thumbs.db
+.DS_Store
