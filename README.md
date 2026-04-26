@@ -39,7 +39,6 @@ Projet de cours (UQAR) : transformation de la logique d’une boutique monolithi
 
 1. **Prérequis** : SDK .NET 8, SQL Server **LocalDB**, Visual Studio 2022 (recommandé) ou CLI.
 2. Ouvrir `Code/EC_MicroServices.sln` et démarrer les **sept** projets (passerelle **après** les services si le Swagger unifié ne charge pas tout de suite - rafraîchir la page au besoin).  
-   Ou : `cd Code` puis `.\start-all.ps1`.
 3. **URLs utiles**  
    - Application / connexion : [http://localhost:5000](http://localhost:5000)  
    - **Swagger** unifié : [http://localhost:5000/swagger](http://localhost:5000/swagger)
